@@ -1,0 +1,23 @@
+{
+  "name": "instant-messaging-app",
+  "version": "1.0.0",
+  "description": "An instant messaging app that uses the native Javascript server and socket implementations.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Wafik20/instant-messaging-app.git"
+  },
+  "author": "Wafik Aboualim",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Wafik20/instant-messaging-app/issues"
+  },
+  "homepage": "https://github.com/Wafik20/instant-messaging-app#readme",
+  "dependencies": {
+    "ws": "^8.18.2"
+  }
+}
