@@ -4,7 +4,20 @@ import constants from './constants/constants.js';
 
 // Create a WebSocket server instance
 const SOCKET_SERVER_PORT = constants.WEBSOCKET_PORT;
-const wss = new WebSocketServer({ port: SOCKET_SERVER_PORT });
+const wss = new WebSocketServer({
+  port: SOCKET_SERVER_PORT, verifyClient: (info, cb) => {
+    console.log('headers:', info.req.headers);
+    const token = info.req.headers['sec-websocket-protocol'];
+    if (token) {
+      // Verify the token here (e.g., using JWT)
+      // If valid, call cb(true), otherwise cb(false)
+      cb(true);
+    } else {
+      console.log('No token provided');
+      cb(false);
+    }
+  }
+});
 const connectedClients = new Map();
 
 // Function to broadcast message to all connected clients
@@ -27,7 +40,6 @@ wss.on('connection', (socket) => {
     try {
       const parsedMessage = JSON.parse(message);
       console.log('Received:', parsedMessage);
-      
       // Broadcast the message to all clients
       broadcastMessage(parsedMessage);
     } catch (error) {

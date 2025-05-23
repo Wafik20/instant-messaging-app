@@ -1,12 +1,9 @@
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import authRoutes from './routes/auth.js';
 import chatRoutes from './routes/chat.js';
 import { verifyToken } from './middleware/auth.js';
 import constants from './constants/constants.js';
-
-dotenv.config();
 
 const app = express();
 
