@@ -1,29 +1,46 @@
-// import { db, getUserByUsername } from './database.js';
-// import { WebSocketServer } from 'ws';
+import { WebSocketServer } from 'ws';
+import constants from './constants/constants.js';
 
-// // Create a WebSocket server on port 8080
-// const server = new WebSocketServer({ port: 8080 });
-// const connectedClients = new Map();
 
-// server.on('headers', (headers) => {
-//     // Ask for bearer token
-//     // Identify the client by the token
-//   console.log('Headers received:', headers);
-// });
+// Create a WebSocket server instance
+const SOCKET_SERVER_PORT = constants.WEBSOCKET_PORT;
+const wss = new WebSocketServer({ port: SOCKET_SERVER_PORT });
+const connectedClients = new Map();
 
-// server.on('connection', (socket) => {
-//   console.log('Client connected');
+// Function to broadcast message to all connected clients
+export const broadcastMessage = (message) => {
 
-//   // Listen for messages from client
-//   socket.on('message', (message) => {
-//     console.log(`Received: ${message}`);
-//     socket.send(`Server says: ${message}`);
-//   });
+  const messageString = JSON.stringify(message);
+  console.log('Broadcasting message:', messageString);
+  wss.clients.forEach((client) => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(messageString);
+    }
+  });
+};
 
-//   // Handle client disconnection
-//   socket.on('close', () => {
-//     console.log('Client disconnected');
-//   });
-// });
+wss.on('connection', (socket) => {
+  console.log('Client connected');
 
-// console.log('WebSocket server running on ws://localhost:8080');
+  // Listen for messages from client
+  socket.on('message', (message) => {
+    try {
+      const parsedMessage = JSON.parse(message);
+      console.log('Received:', parsedMessage);
+      
+      // Broadcast the message to all clients
+      broadcastMessage(parsedMessage);
+    } catch (error) {
+      console.error('Error parsing message:', error);
+    }
+  });
+
+  // Handle client disconnection
+  socket.on('close', () => {
+    console.log('Client disconnected');
+  });
+});
+
+console.log('WebSocket server running on ws://localhost:8080');
+
+export default wss;
