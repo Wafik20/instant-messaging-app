@@ -1,7 +1,4 @@
-import jwt from 'jsonwebtoken';
-import constants from '../constants/constants.js';
-
-const JWT_SECRET = constants.JWT_SECRET;
+import { verifyJwtToken } from '../utils/tokenHelper.js';
 
 export const verifyToken = (req, res, next) => {
   const token = req.headers['authorization']?.split(' ')[1];
@@ -10,11 +7,12 @@ export const verifyToken = (req, res, next) => {
     return res.status(403).json({ message: 'No token provided' });
   }
 
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    req.user = decoded;
-    next();
-  } catch (err) {
+  const { valid, decoded, error } = verifyJwtToken(token);
+
+  if (!valid) {
     return res.status(401).json({ message: 'Unauthorized' });
   }
-}; 
+
+  req.user = decoded;
+  next();
+};
