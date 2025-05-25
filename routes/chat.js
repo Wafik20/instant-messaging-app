@@ -1,5 +1,4 @@
 import express from 'express';
-import { broadcastMessage } from '../socket.js';
 
 const router = express.Router();
 
@@ -20,7 +19,7 @@ router.post('/', (req, res) => {
     };
 
     // Broadcast message to all connected clients
-    broadcastMessage(messageObject);
+    console.log('Broadcasting message through API:', messageObject);
 
     return res.status(200).json({
         message: 'Message sent successfully',
