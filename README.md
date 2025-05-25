@@ -1,2 +1,2 @@
 # instant-messaging-app
-Creating a scalable instant messaging app with the new Javascript native socket implementation.
+Creating a scalable instant messaging server with Express + WS.
