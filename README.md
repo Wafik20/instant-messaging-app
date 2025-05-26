@@ -125,6 +125,11 @@ instant-messaging-app/
 - Room message broadcasting
 - Room management (create/join/leave)
 - Message persistence in database
+- Chat API endpoints:
+  - `GET /api/chat/messages` - Get chat history
+  - `POST /api/chat/messages` - Send a message
+  - `GET /api/chat/rooms` - Get available chat rooms
+  - `POST /api/chat/rooms` - Create a new chat room
 
 ## Setup and Installation
 
